@@ -8,13 +8,17 @@ const router = new Router();
 
 const schema = buildSchema(`
   type Query {
-    hello: String
+    hello: String,
+    stuff: String
   }
 `);
 
 const root = {
   hello: () => {
     return 'Hello world!';
+  },
+  stuff: () => {
+    return 'more stuff and even more!';
   }
 };
 
@@ -24,9 +28,6 @@ router.all('/graphql', graphqlHTTP({
   graphiql: true
 }));
 
-app.use(ctx => {
-  ctx.body = 'Hello Koa';
-});
-
+app.use(router.routes()).use(router.allowedMethods());
 
 app.listen(3000);
