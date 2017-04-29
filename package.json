@@ -7,7 +7,11 @@
   "author": "dskrenta <dskrenta@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "graphiql": "^0.10.1",
+    "graphql": "^0.9.5",
     "koa": "^2.2.0",
+    "koa-graphql": "^0.7.0",
+    "koa-router": "^7.1.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4"
   },
