@@ -32,6 +32,10 @@ const schema = buildSchema(`
     created: String!
   }
 
+  type Mutation {
+    addTodoItem(content: String): TodoItem
+  }
+
   type Query {
     getTodoItems: [TodoItem]
   }
@@ -40,6 +44,11 @@ const schema = buildSchema(`
 const root = {
   getTodoItems: () => {
     return fakeDB;
+  },
+  addTodoItem: ({content}) => {
+    const newItem = new TodoItem(generateID(), content, new Date());
+    fakeDB.push(newItem);
+    return newItem;
   }
 };
 
