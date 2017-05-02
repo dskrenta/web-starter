@@ -15,7 +15,7 @@ query getItems {
 }
 
 mutation addItem {
-	addTodoItem(content: "Even another todo item") {
+  addTodoItem(content: "Even another todo item") {
     id
     content
     created
