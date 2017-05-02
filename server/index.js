@@ -20,10 +20,12 @@ class FakeDB {
 
   deleteItem(id) {
     delete this.store[id];
+    return id;
   }
 
   updateItem(id, content) {
     this.store[id].content = content;
+    return this.store[id];
   }
 
   getItems() {
@@ -48,6 +50,7 @@ class TodoItem {
 }
 
 const fakeDB = new FakeDB();
+
 ['Take out the trash', 'Pick up the dry cleaning', 'Do homework']
   .map(content => fakeDB.addItem(content));
 
@@ -59,11 +62,13 @@ const schema = buildSchema(`
   }
 
   type Mutation {
-    addTodoItem(content: String): TodoItem
+    addTodoItem(content: String!): TodoItem!
+    updateTodoItem(id: ID!, content: String!): TodoItem!
+    removeTodoItem(id: ID!): ID!
   }
 
   type Query {
-    getTodoItems: [TodoItem]
+    getTodoItems: [TodoItem]!
   }
 `);
 
@@ -74,6 +79,12 @@ const root = {
   addTodoItem: ({content}) => {
     const newItem = fakeDB.addItem(content);
     return newItem;
+  },
+  updateTodoItem: ({id, content}) => {
+    return fakeDB.updateItem(id, content);
+  },
+  removeTodoItem: ({id}) => {
+    return fakeDB.deleteItem(id);
   }
 };
 
