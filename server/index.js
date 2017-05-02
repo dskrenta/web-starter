@@ -7,48 +7,84 @@ const crypto = require('crypto');
 const app = new Koa();
 const router = new Router();
 
-class TodoItem {
-  constructor(id, content, created) {
-    this.id = id;
-    this.content = content;
-    this.created = created;
+class FakeDB {
+  constructor() {
+    this.store = {};
+  }
+
+  addItem(content) {
+    const newItem = new TodoItem(content);
+    this.store[newItem.id] = newItem;
+    return newItem;
+  }
+
+  deleteItem(id) {
+    delete this.store[id];
+    return id;
+  }
+
+  updateItem(id, content) {
+    this.store[id].content = content;
+    return this.store[id];
+  }
+
+  getItems() {
+    return Object.values(this.store);
   }
 }
 
-function generateID() {
-  return crypto.randomBytes(10).toString('hex');
+class TodoItem {
+  static generateID() {
+    return crypto.randomBytes(10).toString('hex');
+  }
+
+  static generateTimestamp() {
+    return new Date();
+  }
+
+  constructor(content) {
+    this.id = TodoItem.generateID();
+    this.created = TodoItem.generateTimestamp();
+    this.content = content;
+  }
 }
 
-const fakeDB = [
-  new TodoItem(generateID(), 'Hello, todo!', new Date()),
-  new TodoItem(generateID(), 'Hang up laundry.', new Date()),
-  new TodoItem(generateID(), 'Order Chinese food from Door Dash.', new Date())
-];
+const fakeDB = new FakeDB();
+
+['Take out the trash', 'Pick up the dry cleaning', 'Do homework']
+  .map(content => fakeDB.addItem(content));
 
 const schema = buildSchema(`
   type TodoItem {
-    id: String!
+    id: ID!
     content: String!
     created: String!
   }
 
   type Mutation {
-    addTodoItem(content: String): TodoItem
+    addTodoItem(content: String!): TodoItem!
+    updateTodoItem(id: ID!, content: String!): TodoItem!
+    removeTodoItem(id: ID!): ID!
   }
 
   type Query {
-    getTodoItems: [TodoItem]
+    getTodoItems: [TodoItem]!
   }
 `);
 
 const root = {
   getTodoItems: () => {
-    return fakeDB;
+    return fakeDB.getItems();
   },
   addTodoItem: ({content}) => {
-    const newItem = new TodoItem(generateID(), content, new Date());
-    fakeDB.push(newItem);
+    const newItem = fakeDB.addItem(content);
     return newItem;
+  },
+  updateTodoItem: ({id, content}) => {
+    return fakeDB.updateItem(id, content);
+  },
+  removeTodoItem: ({id}) => {
+    return fakeDB.deleteItem(id);
   }
 };
 
