@@ -88,7 +88,7 @@ const root = {
   }
 };
 
-router.all('/graphql', graphqlHTTP({
+router.all('/api', graphqlHTTP({
   schema: schema,
   rootValue: root,
   graphiql: true
@@ -96,4 +96,4 @@ router.all('/graphql', graphqlHTTP({
 
 app.use(router.routes()).use(router.allowedMethods());
 
-app.listen(3000);
+app.listen(4000);
