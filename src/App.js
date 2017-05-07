@@ -7,6 +7,12 @@ import {
 
 import environment from './createRelayEnvironment';
 
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch
+} from 'react-router-dom';
+
 class App extends Component {
   render() {
     return (
@@ -59,4 +65,13 @@ const Feed = ({ feed }) => (
   </ol>
 )
 
-export default App;
+const Routes = () => (
+  <Router>
+    <Switch>
+      <Route exact path="/" component={App} />
+      <Route path="*" />
+    </Switch>
+  </Router>
+);
+
+export default Routes;
