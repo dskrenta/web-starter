@@ -7,9 +7,11 @@ const {
   printSchema,
 } = require('graphql/utilities');
 
+const GRAPHQL_API_URL = 'http://localhost:3000/api';
+
 console.log(introspectionQuery);
 
-fetch('http://api.githunt.com/graphql', {
+fetch(GRAPHQL_API_URL, {
   method: 'POST',
   headers: {
     'Accept': 'application/json',

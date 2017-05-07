@@ -18,33 +18,30 @@ class App extends Component {
     return (
       <div className="App">
         <h2>Tiny GitHunt</h2>
+
         <QueryRenderer
           environment={environment}
 
           query={graphql`
-            query AppFeedQuery {
-              feed (type: NEW, limit: 5) {
-                repository {
-                  owner { login }
-                  name
-                  stargazers_count
-                }
-
-                postedBy { login }
+            query AppGetItemsQuery {
+              getTodoItems {
+                id
+                content
+                created
               }
             }
           `}
 
-          render={({error, props}) => {
+          render={({ error, props }) => {
             if (error) {
               return <div>{error.message}</div>;
             } else if (props) {
-              console.log(props.feed);
-              return <Feed feed={props.feed} />;
+              console.log(props);
             }
             return <div>Loading</div>;
           }}
         />
+
         <h3>More info</h3>
         <ul>
           <li><a href="http://www.githunt.com/">Full GitHunt App</a></li>
@@ -55,22 +52,12 @@ class App extends Component {
   }
 }
 
-const Feed = ({ feed }) => (
-  <ol>
-    {feed.map(entry => (
-      <li key={entry.repository.owner.login + '/' + entry.repository.name}>
-        {entry.repository.owner.login}/{entry.repository.name}: {entry.repository.stargazers_count} Stars
-      </li>
-    ))}
-  </ol>
-)
-
 const Routes = () => (
   <Router>
-    <Switch>
+    <div>
       <Route exact path="/" component={App} />
-      <Route path="*" />
-    </Switch>
+      <Route exact path="/hello" component={App} />
+    </div>
   </Router>
 );
 

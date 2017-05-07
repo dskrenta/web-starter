@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": false,
   "dependencies": {
+    "concurrently": "^3.4.0",
     "graphql": "^0.9.6",
     "koa": "^2.2.0",
     "koa-graphql": "^0.7.0",
@@ -56,7 +57,8 @@
     "whatwg-fetch": "2.0.2"
   },
   "scripts": {
-    "start": "node scripts/start.js",
+    "oldstart": "node scripts/start.js",
+    "start": "concurrently \"node scripts/start.js\" \"yarn run serve\"",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "relay": "relay-compiler --src ./src --schema schema.graphql",
