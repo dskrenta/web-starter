@@ -57,7 +57,7 @@ const Routes = () => (
   <Router>
     <div>
       <Route exact path="/" component={App} />
-      <Route exact path="/hello" component={App} />
+      <Route path="/hello" component={App} />
     </div>
   </Router>
 );
