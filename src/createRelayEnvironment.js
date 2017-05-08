@@ -5,6 +5,8 @@ const {
   Store,
 } = require('relay-runtime');
 
+const GRAPHQL_API_URL = 'http://localhost:3000/api';
+
 // Define a function that fetches the results of an operation (query/mutation/etc)
 // and returns its results as a Promise:
 function fetchQuery(
@@ -13,7 +15,8 @@ function fetchQuery(
   cacheConfig,
   uploadables,
 ) {
-  return fetch('http://api.githunt.com/graphql', {
+  // return fetch('http://api.githunt.com/graphql', {
+  return fetch(GRAPHQL_API_URL, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
