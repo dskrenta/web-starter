@@ -9,15 +9,14 @@ import environment from './createRelayEnvironment';
 
 import {
   BrowserRouter as Router,
-  Route,
-  Switch
+  Route
 } from 'react-router-dom';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <h2>Tiny GitHunt</h2>
+        <h2>Todo App</h2>
 
         <QueryRenderer
           environment={environment}
@@ -36,21 +35,23 @@ class App extends Component {
             if (error) {
               return <div>{error.message}</div>;
             } else if (props) {
-              console.log(props);
+              return <TodoItem todoItems={props.getTodoItems} />
             }
             return <div>Loading</div>;
           }}
         />
-
-        <h3>More info</h3>
-        <ul>
-          <li><a href="http://www.githunt.com/">Full GitHunt App</a></li>
-          <li><a href="https://github.com/stubailo/relay-modern-hello-world">Improve this example on GitHub</a></li>
-        </ul>
       </div>
     );
   }
 }
+
+const TodoItem = ({ todoItems }) => (
+  <div>
+    {todoItems.map(item => (
+      <p key={item.id}>{item.content}, {item.created}</p>
+    ))}
+  </div>
+);
 
 const Routes = () => (
   <Router>
